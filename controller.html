@@ -1,0 +1,184 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <!-- to get rid of favicon request in console -->
+  <link rel="shortcut icon" href="">
+
+  <!-- P5 STUFF -->
+  <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
+  
+
+  <!-- SOCKET STUFF -->
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+  <script type="text/javascript">
+    
+    /// SOCKET STUFF
+    var socket = io.connect();
+    
+    socket.on('connect', function() {
+      console.log("Connected");
+    });
+
+
+    var alpha;
+    bg= 'black';
+x1= 475;
+y1 = 400;
+x2= 725;
+y2 = 700;
+x3= 225;
+y3 = 700;
+x4= 475;
+y4 = 1000;
+
+
+   
+ 
+
+    function setup() {
+  createCanvas(windowWidth, windowHeight);
+
+
+
+  }
+
+  function draw(){
+    background(bg);
+    ellipse(x1, y1, 200, 200);
+    ellipse(x2, y2, 200, 200);
+    ellipse(x3, y3, 200, 200);
+    ellipse(x4, y4, 200, 200);
+
+
+  }
+
+
+ 
+
+
+
+
+   function handleOrientation(event){
+  alpha = Math.floor(event.alpha);
+
+  socket.emit('alph', alpha);
+  
+
+    if(40<=alpha && alpha< 150){ //checking for state 1
+      bg = 'blue';
+      
+
+       x1= 475;
+      y1 = 1000;
+      x2= 225;
+      y2 = 700;
+      x3= 725;
+      y3 = 700;
+      x4= 475;
+      y4 = 400;
+
+    }
+
+    //STATE 2
+    if (150<= alpha && alpha< 240){
+      bg= 'red';
+       x1= 225;
+      y1 = 700;
+      x2= 475;
+      y2 = 400;
+      x3= 475;
+      y3 = 1000;
+      x4= 725;
+      y4 = 700;
+
+    }
+
+    //STATE 3
+    if (240<= alpha && alpha < 330){
+      bg= 'green';
+       x1= 475;
+      y1 = 400;
+      x2= 725;
+      y2 = 700;
+      x3= 225;
+      y3 = 700;
+      x4= 475;
+      y4 = 1000;
+    }
+
+    //STATE 4
+    if (330<= alpha && alpha< 360 ){
+        bg = 'purple';
+     
+       x1= 725;
+      y1 = 700;
+      x2= 475;
+      y2 = 1000;
+      x3= 475;
+      y3 = 400;
+      x4= 225;
+      y4 = 700;
+    }
+    if (alpha> 0 && alpha < 40) {
+      bg = 'purple';
+       x1= 725;
+      y1 = 700;
+      x2= 475;
+      y2 = 1000;
+      x3= 475;
+      y3 = 400;
+      x4= 225;
+      y4 = 700;
+
+       
+    }
+}
+
+// event listener for orientation - built into js
+
+window.addEventListener('deviceorientation', handleOrientation, true);
+
+
+   function mousePressed() {
+
+   var distance1= dist(mouseX, mouseY, x1, y1);
+  var distance2= dist(mouseX, mouseY, x2, y2);
+  var distance3= dist(mouseX, mouseY, x3, y3);
+  var distance4= dist(mouseX, mouseY, x4, y4);
+
+    if(distance1< 200){
+      socket.emit('button1');
+      
+
+    }
+     if(distance2< 200){
+     socket.emit('button2');
+     
+
+    }
+     if(distance3< 200){
+     socket.emit('button3');
+     
+
+    }
+     if(distance4< 200){
+      socket.emit('button4');
+      
+
+    }
+
+  
+}
+
+
+
+  </script>
+
+  <style> body {padding: 0; margin: 0;}</style>
+</head>
+
+<body>
+</body>
+</html>
